@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart - QuickBite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .navbar {
+            background: #ff4500;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 { font-size: 24px; }
+        .navbar a { color: white; text-decoration: none; margin-left: 20px; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        h2 { font-size: 28px; margin-bottom: 20px; color: #333; }
+        .cart-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-info h3 { font-size: 18px; color: #333; }
+        .item-info p { color: #666; margin-top: 5px; }
+        .item-price { font-size: 20px; color: #ff4500; font-weight: bold; }
+        .remove-btn {
+            background: #ff0000;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .total-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: right;
+        }
+        .total-box h3 { font-size: 24px; color: #333; }
+        .total-box span { color: #ff4500; font-size: 28px; font-weight: bold; }
+        .checkout-btn {
+            display: inline-block;
+            background: #ff4500;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+        .empty-cart { text-align: center; padding: 60px; color: #666; font-size: 20px; }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <h1>🍔 QuickBite</h1>
+    <div>
+        <a href="/">Home</a>
+        {% if user.is_authenticated %}
+            <a href="/accounts/logout/">Logout</a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container">
+    <h2>🛒 Your Cart</h2>
+    {% if cart_items %}
+        {% for cart_item in cart_items %}
+        <div class="cart-item">
+            <div class="item-info">
+                <h3>{{ cart_item.item.name }}</h3>
+                <p>{{ cart_item.item.restaurant.name }} | Quantity: {{ cart_item.quantity }}</p>
+            </div>
+            <div class="item-price">₹{{ cart_item.total_price }}</div>
+            <a href="/remove-from-cart/{{ cart_item.id }}/" class="remove-btn">❌ Remove</a>
+        </div>
+        {% endfor %}
+        <div class="total-box">
+            <h3>Total: <span>₹{{ total }}</span></h3>
+            <a href="/checkout/" class="checkout-btn">✅ Checkout</a>
+        </div>
+    {% else %}
+        <div class="empty-cart">
+            <p>🛒 Your cart is empty!</p>
+            <br>
+            <a href="/" style="color: #ff4500;">Browse Restaurants</a>
+        </div>
+    {% endif %}
+</div>
+
+<footer>
+    <p>© 2026 QuickBite — Made by Magesh 🍔</p>
+</footer>
+
+</body>
+</html>
